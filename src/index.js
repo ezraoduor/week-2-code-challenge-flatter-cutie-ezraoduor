@@ -18,3 +18,10 @@ function addCharacterToBar(character) {
     span.addEventListener("click", () => displayCharacter(character));
     characterBar.appendChild(span);
 }
+
+function displayCharacter(character) {
+    currentCharacter = character;
+    characterName.textContent = character.name;
+    characterImage.src = character.image;
+    characterVotes.textContent = character.votes;
+}
