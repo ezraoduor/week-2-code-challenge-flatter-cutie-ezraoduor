@@ -1,27 +1,68 @@
 // Your code here
 document.addEventListener("DOMContentLoaded", () => {
-    const characterBar = document.getElementById("character-bar")
-})
+    const characterBar = document.getElementById("character-bar");
+    const detailedInfo = document.getElementById("detailed-info");
+    const characterName = document.getElementById("name");
+    const characterImage = document.getElementById("image");
+    const voteCountElement = document.getElementById("vote-count");
+    const votesForm = document.getElementById("votes-form");
+    const voteInput = document.getElementById("votes");
+    const resetVotesButton = document.getElementById("reset-btn");
+    const characterForm = document.getElementById("character-form");
+    const newCharacterName = document.getElementById("name");
+    const newCharacterImage = document.getElementById("image-url");
+    let selectedCharacter = null;
 
-function fetchCharacters() {
- fetch("http://localhost:3000/characters")
- .then(response => response.json)
- .then(characters => {
-    characters.forEach(addCharacterToBar)
- })
-
-}
+    
+    fetch("http://localhost:3000/characters")
+    .then(response => response.json())
+    .then(characters => {
+    characters.forEach(character => addCharacterToBar(character));
+});
 
 function addCharacterToBar(character) {
     const span = document.createElement("span");
     span.textContent = character.name;
-    span.addEventListener("click", () => displayCharacter(character));
+    span.addEventListener("click", () => displayCharacterDetails(character));
     characterBar.appendChild(span);
 }
 
-function displayCharacter(character) {
-    currentCharacter = character;
+function displayCharacterDetails(character) {
+    selectedCharacter = character;
     characterName.textContent = character.name;
     characterImage.src = character.image;
-    characterVotes.textContent = character.votes;
-}
+    characterImage.alt = character.name;
+    voteCountElement.textContent = character.votes;
+ }
+
+votesForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+      
+
+    const additionalVotes = parseInt(voteInput.value) || 0;
+    const currentVotes = parseInt(voteCountElement.textContent);
+    voteCountElement.textContent = currentVotes + additionalVotes;
+    voteInput.value = "";
+});
+
+    
+resetVotesButton.addEventListener("click", () => {
+    if (!selectedCharacter) return;
+    voteCountElement.textContent = "0";
+});
+
+    
+if (characterForm) {
+    characterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = newCharacterName.value.trim();
+    const image = newCharacterImage.value.trim();
+    if (!name || !image) return;
+
+    const newCharacter = { id: Date.now(), name, image, votes: 0 };
+    addCharacterToBar(newCharacter);
+    displayCharacterDetails(newCharacter);
+    characterForm.reset();
+        });
+    }
+});
