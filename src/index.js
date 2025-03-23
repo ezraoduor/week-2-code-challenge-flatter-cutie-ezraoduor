@@ -59,7 +59,7 @@ if (characterForm) {
     const image = newCharacterImage.value.trim();
     if (!name || !image) return;
 
-    const newCharacter = { id: Date.now(), name, image, votes: 0 };
+    const newCharacter = {  name, image, votes: 0 };
     addCharacterToBar(newCharacter);
     displayCharacterDetails(newCharacter);
     characterForm.reset();
