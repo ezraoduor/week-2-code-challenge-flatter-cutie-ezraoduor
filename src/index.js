@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedCharacter = null;
 
     
-    fetch("http://localhost:3000/characters")
+    fetch("https://json-server-vercel-nine-bay.vercel.app/characters")
     .then(response => response.json())
     .then(characters => {
     characters.forEach(character => addCharacterToBar(character));
